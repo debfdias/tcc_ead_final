@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+	version="2.2">
+
+
+ <managed-bean>
+  <managed-bean-name>authorization</managed-bean-name>
+  <managed-bean-class>br.com.saber.tcc.presentation.authentication.Authorization</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+ </managed-bean>
+ 
+ <navigation-rule>
+  <from-view-id>/student/edit_tcc</from-view-id>
+  <navigation-case>
+		   <from-action>#{authorization.userEdit}</from-action>
+		   <from-outcome>edit</from-outcome>
+		   <to-view-id>user/editser.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ 
+	<lifecycle>
+		<phase-listener>
+	    	br.com.saber.tcc.presentation.MessageHandler
+	    </phase-listener>
+	</lifecycle>
+	<application>
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>/resources/messages</base-name>
+			<var>msg</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>/resources/strings</base-name>
+			<var>str</var>
+		</resource-bundle>
+	</application>
+	<factory>
+        <exception-handler-factory>
+            br.com.saber.tcc.exceptions.CustomExceptionHandlerFactory
+        </exception-handler-factory>
+	</factory>
+</faces-config>

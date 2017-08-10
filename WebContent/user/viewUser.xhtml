@@ -1,0 +1,105 @@
+<ui:composition template="/template/general.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<h:outputText value="Usuário"></h:outputText>
+	</ui:define>
+
+	<ui:define name="content">
+		<f:metadata>
+			<f:viewParam name="token" value="#{viewUser.token}" required="true"
+				requiredMessage="#{msg.TOKEN_REQUIRED}" />
+		</f:metadata>
+
+		<h:form id="form" class="form-horizontal">
+
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="inputNome">Nome</label>
+				<div class="col-sm-10">
+					<h:inputText value="#{viewUser.user.name}" id="name"
+						disabled="true" styleClass="form-control accordion-input" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="inputSobrenome">Sobrenome</label>
+				<div class="col-sm-10">
+					<h:inputText value="#{viewUser.user.lastname}" id="lastname"
+						disabled="true" styleClass="form-control accordion-input" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="inputCpf">CPF</label>
+				<div class="col-sm-10">
+					<p:inputMask value="#{viewUser.user.cpf}" id="cpf"
+						mask="99999999999" disabled="true"
+						styleClass="form-control accordion-input"/>
+					<p:message id="cpfMessage" for="cpf" display="text" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="email">E-mail/Login</label>
+				<div class="col-sm-10">
+					<h:inputText value="#{viewUser.user.email}" id="email"
+						disabled="true" styleClass="form-control accordion-input" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+					<label class="control-label col-sm-2" for="phoneNumber">Telefone</label>
+					
+					<div class="col-sm-10">
+					
+						<p:inputMask value="#{viewUser.user.phoneNumber}" id="phoneNumber"
+							mask="(99) 9999-9999?9" disabled="true"
+							styleClass="form-control accordion-input" />
+													
+						<p:message id="phoneNumberMessage" for="phoneNumber" display="text" />
+					</div>
+				</div>
+			
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="city">Cidade</label>
+				<div class="col-sm-10">
+					<h:inputText value="#{viewUser.user.city.name}" id="city"
+						disabled="true" styleClass="form-control accordion-input" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="State">Estado</label>
+				<div class="col-sm-10">
+					<h:inputText value="#{viewUser.user.city.state.name}" id="State"
+						disabled="true" styleClass="form-control accordion-input" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="email">Perfil</label>
+				<div class="col-sm-10">
+					<h:inputText value="#{viewUser.user.profile.name}" id="profile"
+						disabled="true" styleClass="form-control accordion-input" />
+				</div>
+			</div>
+
+			<p:link value="Mudança de senha" outcome="/authentication/loginProblems" >
+				<ui:param name="email" value="#{loginProblems.email}" />
+			</p:link>
+
+			<div class="form-group pull-right">
+				<div class="col-sm-12">
+					<h:commandButton value="Voltar"
+						onclick="history.back(); return false;" id="back"
+						class="btn btn-default btn-xs-full-width" />
+				</div>
+			</div>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>

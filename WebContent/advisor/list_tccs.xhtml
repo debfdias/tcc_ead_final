@@ -1,0 +1,195 @@
+<ui:composition template="/template/one_column.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="title">
+		
+		<h:outputText value="#{msg.TCCS_LIST}"></h:outputText>
+	</ui:define>
+	
+	<f:metadata>
+		<f:viewAction action="#{authorization.definingUserAllocations}" />
+	</f:metadata>
+
+	<ui:define name="content">
+	
+		<div class="row white-block">
+		
+		<h3 class='color-text'>#{msg.TCC_STUDENTS_AND_WORKS}</h3>
+  		<br/>
+		<h2>#{msg.WORKS_BRIEF_INSTRUCTION_TO_ADVISOR}</h2>
+		
+		</div>
+		
+		<br />
+		
+		<div class="row white-block">
+		
+			<div class="row labels mb-extra">
+				<div class="col-md-12">
+					<h5>
+						<h:outputText styleClass="color-text" rendered="#{not listTCCs.isEmpty()}"
+							value="#{listTCCs.getClass(listTCCs.classId).course.name}"/>
+					</h5>
+				</div>
+				<div class="col-md-12">
+					<h5>
+						<h:outputText rendered="#{listTCCs.haveManyClasss()}" value="#{listTCCs.getClass(listTCCs.classId).name} | "/>
+						<p:link styleClass="color-text" value="#{msg.CALENDAR}" outcome="#{listTCCs.pageCalendarClass}"
+							title="#{msg.CLASS_CALENDAR_ACCESS}">
+						
+						<f:param name="turmaId" value="#{listTCCs.classId}" />
+						</p:link>
+					</h5>
+				</div>
+				<div class="col-md-3">
+					<div class="tcc-item">
+						<p:graphicImage class="tcc" data-toggle="tooltip" library="img" name="icons/tcc_status/none.svg"/>
+						
+					</div>
+					<div class="label-text">
+						<h:outputText value="Tópico não iniciado"></h:outputText>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="tcc-item">
+						<p:graphicImage class="tcc" data-toggle="tooltip" library="img" name="icons/tcc_status/editing_white.svg"/>
+					</div>
+					<div class="label-text">
+						<h:outputText value="Tópico em desenvolvimento"></h:outputText>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="tcc-item">
+						<p:graphicImage class="tcc" data-toggle="tooltip" library="img" name="icons/tcc_status/editing.svg"/>
+					</div>
+					<div class="label-text">
+						<h:outputText value="Tópico em avaliação pelo(a) orientador(a)"></h:outputText>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="tcc-item">
+						<p:graphicImage class="tcc" data-toggle="tooltip" library="img" name="icons/tcc_status/finished.svg"/>
+					</div>
+					<div class="label-text">
+						<h:outputText value="Tópico finalizado pelo(a) orientador(a)"></h:outputText>
+					</div>
+				</div>
+				
+			</div>
+		
+			<h:outputScript target="head">
+				$(function () {
+			  		$('[data-toggle="tooltip"]').tooltip();
+			  		//$('.margin-content').addClass('white-block');
+				});
+			</h:outputScript>
+	
+			<f:metadata>
+				<f:viewParam name="class" value="#{listTCCs.classId}"
+					required="true" requiredMessage="O token é obrigatório" />
+			</f:metadata>
+			<!-- 
+			 <p:graphicImage library="img" name="icons/calendar.svg">
+			</p:graphicImage>
+			 <p:graphicImage library="img" name="icons/forum.svg">
+			</p:graphicImage> -->
+			
+			<ui:repeat var="tcc" value="#{listTCCs.tccs}">
+				<div class="toggleable_element list_tccs">
+					<div class="toggleable_header row row-eq-height">
+						<div class="col-xs-12 col-sm-4 list_tcc_name #{tcc.studentStatus} ">
+						
+							<div class="col-md-8 col-sm-7 col-xs-8 name_student_list">
+								<h:outputText styleClass="color-text" value="#{tcc.studentName} #{tcc.studentLastName}"/>
+							</div>
+							
+							<h:panelGroup>
+							
+								<p:link outcome="#{listTCCs.pageCalendar}" title="#{msg.STUDENT_CALENDAR_ACCESS}"
+									rendered="#{listTCCs.isStudentCalendarDivergentFromClasss(tcc.studentAllocationId)}">
+									
+									<f:param name="tcc" value="#{tcc.studentAllocationId}" />
+									<p:graphicImage class="tcc" data-toggle="tooltip" library="img" name="icons/calendar.svg"/>
+								</p:link>
+								
+							</h:panelGroup>
+
+							<h:panelGroup layout="block" class="col-md-2 col-sm-3 col-xs-1 pull-right" rendered="#{not empty tcc.studentStatus}">
+	
+								<a class="tooltip-link" href="#curso #{tcc.studentAllocationId}" data-toggle="collapse">
+								
+									<span class="tooltip-link" data-toggle="tooltip" data-placement="bottom" title="#{tcc.studentStatusTooltipLabel}">
+										<h:outputText styleClass="badge" value="#{tcc.studentStatusLabel}" rendered="#{not empty tcc.studentStatus}" />
+									</span>
+									
+								</a>
+							</h:panelGroup>
+							
+							<h:panelGroup class="col-md-2 col-sm-3 col-xs-1 pull-right m-r-32" rendered="#{tcc.forumNotifications ne 0}">
+								<h:outputText styleClass="badge badge-forum" value="#{tcc.forumNotifications}" 
+									rendered="#{tcc.forumNotifications ne 0}"/>
+							</h:panelGroup>
+						</div>
+						
+						<div class="col-xs-12 col-sm-8 list_tcc_element">
+							<ui:repeat var="group" value="#{tcc.groups}" varStatus="vt">
+								<div class="group_tcc block_tcc">
+								
+									<ui:repeat var="topic" value="#{group.topics}">
+										<div class="tcc-item">
+											<div class="#{topic.topicStatus}">
+												<a class="tooltip-link" href="#curso#{tcc.studentAllocationId}" data-toggle="collapse">
+												
+													<!--alterado para pegar o status do topico: colocar um switch no metodo da tag name
+														para retornar a stringPath da imagem-->
+														
+													<p:graphicImage class="tooltipEditTcc" data-toggle="tooltip" data-placement="bottom"
+														title="#{topic.topicName}" library="img" name="#{topic.topicStatus}"/>
+												</a>
+											</div>
+										</div>
+									</ui:repeat>
+									
+								</div>
+							</ui:repeat>
+						</div>
+						
+						<a class="toggleable_link tccs collapsed" data-toggle="collapse" href="#curso#{tcc.studentAllocationId}">
+							<span></span>
+						</a>
+					</div>
+					
+					<div class="collapse" id="curso#{tcc.studentAllocationId}">
+						<h:link styleClass="classes-link-tccs" outcome="/student/edit_tcc" data-toggle="tooltip" data-placement="bottom"
+							title="#{msg.TCC_ACCESS_TITLE}">
+							
+							<f:param name="tcc" value="#{tcc.studentAllocationId}" />
+							<div class="collapse_item-name list">
+								<h:outputText value="#{tcc.tccTitle}" styleClass="collapse_item col-md-11" escape="false"/>
+								
+								<div class="tcc-pdf-item col-md-1">
+									<h:form>
+										<h:commandLink><!-- editado para exibir img pdf -->
+											<p:graphicImage class="tcc_pdf" data-toggle="tooltip" library="img" name="icons/pdf.svg"
+												data-placement="bottom" title="Gerar PDF">										
+											</p:graphicImage>
+											
+											<p:fileDownload value="#{listTCCs.download(tcc.studentAllocationId)}"/>
+										</h:commandLink>
+									</h:form>
+								</div>
+								
+							</div>
+						</h:link>
+					</div>
+				</div>
+			</ui:repeat>
+		
+		</div>
+	</ui:define>
+</ui:composition>

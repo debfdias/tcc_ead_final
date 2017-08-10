@@ -1,0 +1,81 @@
+<ui:composition template="/template/one_column.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:define name="title">
+		<h:outputText value="Escolha o trabalho acadêmico que você deseja consultar"></h:outputText>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form>
+			<div class="toggleable_element choose-class-student">
+				<div class="toggleable_header">
+					<span>#{msg.TCC_STUDENT_IN_PROGRESS}</span>
+					<a
+						class="toggleable_link choose collapsed" data-toggle="collapse"
+						href="#inProgress"><span></span>
+					</a>
+				</div>
+				<h:panelGroup layout="block">
+					<div class="collapse" id="inProgress">
+						<ui:repeat var="t" value="#{chooseClassStudent.tccsInProgress}">
+							<h:commandLink styleClass="classes-link-student"
+								action="#{chooseClassStudent.choose(t.id)}">
+								<div class="collapse_item-name student">
+									<h:outputText value="#{t.classs.course.institution.name}"
+										styleClass="collapse_item"></h:outputText>
+								</div>
+							</h:commandLink>
+							<h:commandLink styleClass="classes-link-student"
+								action="#{chooseClassStudent.choose(t.id)}">
+								<div class="collapse_item-name student">
+									<h:outputText value="#{t.classs.course.name}"
+										styleClass="collapse_item"></h:outputText>
+								</div>
+							</h:commandLink>
+							<h:commandLink styleClass="classes-link-student"
+								action="#{chooseClassStudent.choose(t.id)}">
+								<div class="collapse_item-name student">
+									<h:outputText value="#{t.area.line.name}"
+										styleClass="collapse_item"></h:outputText>
+								</div>
+							</h:commandLink>
+							<h:commandLink styleClass="classes-link-student"
+								action="#{chooseClassStudent.choose(t.id)}">
+								<div class="collapse_item-name student">
+									<h:outputText value="#{t.area.name}"
+										styleClass="collapse_item"></h:outputText>
+								</div>
+							</h:commandLink>							
+						</ui:repeat>
+					</div>
+				</h:panelGroup>
+			</div>
+			<h:panelGroup rendered="#{chooseClassStudent.hasFinishedTccs()}">
+				<div class="toggleable_element choose-class-student">
+					<div class="toggleable_header">
+						<span>#{msg.TCC_STUDENT_FINISHED}</span> <a
+							class="toggleable_link choose collapsed" data-toggle="collapse"
+							href="#finished"><span></span></a>
+					</div>
+					<h:panelGroup layout="block">
+						<div class="collapse" id="finished">
+							<ui:repeat var="t" value="#{chooseClassStudent.tccsFinished}">
+								<h:commandLink styleClass="classes-link-student"
+									action="#{chooseClassStudent.choose(t.id)}">
+									<div class="collapse_item-name student">
+										<h:outputText value="#{t.classs.course.name}"
+											styleClass="collapse_item"></h:outputText>
+									</div>
+								</h:commandLink>
+							</ui:repeat>
+						</div>
+					</h:panelGroup>
+				</div>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

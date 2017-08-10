@@ -1,0 +1,159 @@
+<ui:composition template="/template/one_column.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<h:outputText value="#{msg.INSTITUTION_EDITION}"></h:outputText>
+	</ui:define>
+	
+	<f:metadata>
+		<f:viewParam name="institution"
+			value="#{manageInstitution.institutionId}" />
+	</f:metadata>
+
+	<ui:define name="header-button">
+	
+		<h:link onclick="history.go(-1)"
+			styleClass="btn btn-link pull-right back-button">
+			
+			<i class="glyphicon glyphicon-chevron-left"/>
+			
+			<h:outputText value="#{msg.BACK}" />
+		</h:link>
+		
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div class="white-block">
+
+			<h1>
+				<span>#{msg.INSTITUTION}</span>
+			</h1>
+
+			<h3>#{manageInstitution.institution.name}</h3>
+			
+			<br />
+
+			<h2>Cadastre os cursos referentes a instituição <h:outputText value="#{manageInstitution.institution.acronym}"/> - <h:outputText value="#{manageInstitution.institution.name}"/>.</h2>
+
+			<br />
+
+			<h:form id="form" class="form-horizontal">
+				<div class="row">
+				
+					<div class="col-xs-12">
+						
+						<div class="col-md-12 col-xs-12">
+						
+							<div class="accordion-insert">
+							
+								<div>
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"/>
+									#{msg.COURSES_ADD}
+								</div>
+							</div>
+							
+						</div>
+						
+						<div class="col-md-12 col-xs-12">
+						
+							<div class="accordion-panel">
+								
+								<div class="row">
+								
+									<div class="col-md-8 col-xs-12">
+									
+										<label class="col-sm-1 control-label label-accordion">Curso</label>
+										
+											<div class="col-sm-10">
+											
+												<h:inputText value="#{manageInstitution.course.name}" id="curso"
+													required="true"
+													requiredMessage="#{msg.COURSES_NAME_REQUIRED}"
+													styleClass="form-control accordion-input accordion-input" />
+													
+												<p:message id="cursoMessage" for="curso" display="text" />
+												
+											</div>
+									</div>
+									<div class="col-md-8 col-xs-12">
+											
+											<label class="col-sm-1 control-label label-accordion" for="courseType">Tipos de Curso</label>
+										
+											<div class="col-sm-10">
+												<p:selectOneMenu id="courseType" value="#{manageInstitution.course.courseTypeId}" 
+												 	required="true" requiredMessage="#{msg.COURSES_TYPE_REQUIRED}"
+													styleClass="accordion-input">
+															 	
+												<f:selectItem itemLabel="Selecione" itemValue="" />
+												<f:selectItems value="#{manageInstitution.courseTypeOptions}"  />
+							
+												</p:selectOneMenu>
+																							
+											</div>
+									</div>
+									
+									<div class="col-sm-12">
+										<h:link outcome="institution/manageInstitution.xhtml">
+										
+											<h:commandButton value="#{msg.SAVE}"
+												action="#{manageInstitution.saveCourse}" id="create"
+												class="btn btn-padrao btn-verde btn-accordion" />
+												
+											<f:param value="#{manageInstitution.institutionId}"/>
+												
+										</h:link>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+						
+						<script>
+							$(".accordion-insert").click(function() {
+								$(".accordion-panel").slideToggle("slow");
+							});
+						</script>
+						
+						<br/>
+						
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group">
+									<p:dataTable var="course" value="#{manageInstitution.institution.courses}" paginator="true"  
+										emptyMessage="#{msg.COURSES_EMPTY_MESSAGE}" sortBy="#{course.name}" styleClass="table-admin-pattern">
+									
+										<p:column headerText="#{msg.COURSES_LIST}" visible="true">
+										
+											<h:link outcome="/course/manageCourse.xhtml">
+												<h:outputText value="#{course.name}"/>	
+												<f:param name="courseId" value="#{course.id}" />
+											</h:link>
+											
+										</p:column>
+
+										<p:column headerText="Editar" styleClass="text-center table-options">
+											<h:link styleClass="btn btn-default icon-options"
+												outcome="/course/editCourse" title="#{msg.COURSES_EDITION}">
+												
+												<p:graphicImage library="img" name="new_img/icon_lapis.svg" />
+												<f:param name="courseId" value="#{course.id}" />
+											</h:link>
+							   			</p:column> 
+			
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</h:form>
+			
+		</div>
+	</ui:define>
+</ui:composition>

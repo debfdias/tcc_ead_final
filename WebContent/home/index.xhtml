@@ -1,0 +1,18 @@
+<ui:composition template="/template/one_column.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:define name="title">
+		<h:outputText value="#{msg.WELCOME}, #{index.user.name}!"></h:outputText>
+	</ui:define>
+	<ui:param name="titleClass" value="index" />
+		
+	<ui:define name="content">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{index.loadStudentAllocationData()}" />
+		</f:metadata>
+	</ui:define>
+</ui:composition>

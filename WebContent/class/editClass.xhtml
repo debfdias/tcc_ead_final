@@ -1,0 +1,383 @@
+<ui:composition template="/template/one_column.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<h:outputText value="#{msg.CLASS_EDITION}"></h:outputText>
+	</ui:define>
+
+	<ui:define name="header-button">
+		<h:link onclick="history.go(-1)"
+			styleClass="btn btn-link pull-right back-button">
+			<i class="glyphicon glyphicon-chevron-left"> </i>
+			<h:outputText value="#{msg.BACK}" />
+		</h:link>
+	</ui:define>
+
+
+	<ui:define name="content">
+
+		<div class="white-block">
+			<f:metadata>
+				<f:viewParam name="turmaId" value="#{editTurma.turmaId}" />
+			</f:metadata>
+			
+			<h1>
+				<span>Editar Turma</span>
+			</h1>
+			<br />
+			<h2>Edite a turma cadastrada.</h2>
+			<br /> <br />
+			
+
+			<h:form id="form" class="form-horizontal">
+				<div class="row">
+					<div class="col-xs-12">
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="inputNome">Nome
+							da instituição</label>
+						<div class="col-sm-10">
+							<p:inputText value="#{editTurma.turma.course.institution.name}"
+								id="name" disabled="true" required="true"
+								requiredMessage="#{msg.INSTITUTION_NAME_REQUIRED}"
+								styleClass="form-control accordion-input accordion-input" />
+							<p:message id="nameMessage" for="name" display="text" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="inputcourse">Nome
+							do curso</label>
+						<div class="col-sm-10">
+							<p:inputText value="#{editTurma.turma.course.name}" id="course"
+								disabled="true" required="true"
+								requiredMessage="#{msg.COURSES_NAME_REQUIRED}"
+								styleClass="form-control accordion-input accordion-input" />
+							<p:message id="courseMessage" for="course" display="text" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="inputturma">Nome
+							da turma</label>
+						<div class="col-sm-10">
+							<p:inputText value="#{editTurma.turma.name}" id="turma"
+								required="true" requiredMessage="#{msg.CLASS_NAME_REQUIRED}"
+								styleClass="form-control accordion-input accordion-input" />
+							<p:message id="turmaMessage" for="turma" display="text" />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="preProposalTemplate">Template
+							da Pré-proposta</label>
+						<div class="col-sm-10">
+							<p:selectOneMenu id="preProposalTemplate"
+								value="#{editTurma.turma.preProposalTemplate.id}"
+								style="width:100%;" required="true"
+								requiredMessage="#{msg.CLASS_PROPOSAL_EMPTY}">
+								<f:selectItem
+									itemLabel=""
+									itemValue="#{editTurma.turma.preProposalTemplate.name}" />
+								<f:selectItems value="#{editTurma.preproposalOptions}" />
+							</p:selectOneMenu>
+							<p:message for="preProposalTemplate" display="text" />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="tccTemplate">Template
+							do Trabalho</label>
+						<div class="col-sm-10">
+							<p:selectOneMenu id="tccTemplate"
+								value="#{editTurma.turma.tccTemplate.id}" style="width:100%;"
+								required="true"
+								requiredMessage="#{msg.CLASS_TEMPLATE_TCC_EMPTY}">
+								<f:selectItem itemLabel=""
+									itemValue="#{editTurma.turma.tccTemplate.name}" />
+								<f:selectItems value="#{editTurma.templateTccOptions}" />
+							</p:selectOneMenu>
+							<p:message for="tccTemplate" display="text" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="pdfConfiguration">Configuração
+							do PDF</label>
+						<div class="col-sm-10">
+							<p:selectOneMenu id="pdfConfiguration"
+								value="#{editTurma.turma.pdfConfiguration.id}"
+								style="width:100%;" required="true"
+								requiredMessage="#{msg.CLASS_CONFIGURAÇÃO_PDF_EMPTY}">
+								<f:selectItem
+									itemLabel=""
+									itemValue="#{editTurma.turma.pdfConfiguration.description}" />
+								<f:selectItems value="#{editTurma.pdfConfigOptions}" />
+							</p:selectOneMenu>
+							<p:message for="pdfConfiguration" display="text" />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="button1">Data de início da escrita da pré-proposta</label>
+						<div class="col-sm-10">
+							<p:calendar id="button1"
+								value="#{editTurma.turma.startPreProposalEdition}" required="true"
+								requiredMessage="#{msg.CLASS_DATE_PREPOPOSAL_EMPTY}"
+								styleClass="form-control accordion-input accordion-input"
+								pattern="dd/MM/yyyy HH:mm:ss" />
+							<p:message for="button1" display="text" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="button">Data de término da escrita da pré-proposta</label>
+						<div class="col-sm-10">
+							<p:calendar id="button"
+								value="#{editTurma.turma.endPreProposalEdition}" required="true"
+								requiredMessage="#{msg.CLASS_DATE_PREPOPOSAL_EMPTY}"
+								styleClass="form-control accordion-input accordion-input"
+								pattern="dd/MM/yyyy HH:mm:ss" />
+							<p:message for="button" display="text" />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="button2">Data de início da escrita do trabalho</label>
+						<div class="col-sm-10">
+							<p:calendar id="button2"
+								value="#{editTurma.turma.startTccEdition}" required="true"
+								requiredMessage="#{msg.CLASS_DATE_START_EMPTY}"
+								styleClass="form-control accordion-input accordion-input"
+								pattern="dd/MM/yyyy HH:mm:ss" />
+							<p:message for="button2" display="text" />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="button3">Data de término da escrita do trabalho</label>
+						<div class="col-sm-10">
+							<p:calendar id="button3" value="#{editTurma.turma.endTccEdition}"
+								required="true" requiredMessage="#{msg.CLASS_DATE_END_EMPTY}"
+								styleClass="form-control accordion-input accordion-input"
+								pattern="dd/MM/yyyy HH:mm:ss" />
+							<p:message for="button3" display="text" />
+						</div>
+					</div>
+					
+					<hr/>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="chooseArea">Mensagem
+							da Área escolhida</label>
+						<div class="col-sm-10">
+							<p:inputTextarea rows="4"
+								styleClass="accordion-area accordion-input" cols="93"
+								value="#{editTurma.turma.chooseAreaMessage}" id="chooseArea"
+								required="true" requiredMessage="#{msg.CLASS_AREA_MSG_EMPTY}" />
+							<p:message for="chooseArea" display="text" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="prepoposalMsg">Mensagem
+							da Pré-proposta</label>
+						<div class="col-sm-10">
+							<p:inputTextarea rows="4"
+								styleClass="accordion-area accordion-input" cols="93"
+								value="#{editTurma.turma.preProposalMessage}" id="prepoposalMsg"
+								required="true"
+								requiredMessage="#{msg.CLASS_PREPOPOSAL_MSG_EMPTY}" />
+							<p:message for="prepoposalMsg" display="text" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label  class="control-label col-sm-2" for="tccMessage">Mensagem
+							do Trabalho</label>
+						<div class="col-sm-10">
+							<p:inputTextarea rows="4"
+								styleClass="accordion-area accordion-input" cols="93"
+								value="#{editTurma.turma.tccMessage}" id="tccMessage"
+								required="true" requiredMessage="#{msg.CLASS_TCC_MSG_EMPTY}" />
+							<p:message for="tccMessage" display="text" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-2">Termos de Uso</label>
+						<div class="col-sm-10">
+							<p:inputTextarea rows="4" id="inputTermsOfUseMessage"
+								styleClass="accordion-area accordion-input" required="true"
+								value="#{editTurma.turma.termsOfUse}" counter="display"
+								maxlength="65535" counterTemplate="{0} caracteres"
+								requiredMessage="#{msg.CLASS_TERMS_USE_MSG_EMPTY}" />
+							<h:outputText id="display" styleClass="contagem-caracteres" />
+							<p:message for="inputTermsOfUseMessage" display="text" />
+						</div>
+					</div>
+					<div class="form-group">
+							<p:outputLabel value="A turma têm polos?" styleClass="control-label col-sm-2" for="poloClassSelection"></p:outputLabel>
+								<div class="col-sm-10">
+							        <p:selectBooleanButton id="poloClassSelection" value="#{editTurma.turma.createPolos}" onLabel="Sim" offLabel="Não" disabled="true"
+							        	onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px;" />
+			   					 </div>
+					</div>
+					<div class="form-group">
+									<p:outputLabel value="Criação de polos" styleClass="control-label col-sm-2" for="poloClass" rendered="false"></p:outputLabel>
+										<div class="col-sm-10">
+											<p:selectBooleanCheckbox rendered="false"
+												value="#{editTurma.turma.createPolos}" id="poloClass" >
+											</p:selectBooleanCheckbox>
+										</div>
+								</div>
+					</div>
+				</div>
+				<br />
+
+				<div class="accordion-insert">
+					<div>
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						Adicionar polo
+					</div>
+				</div>
+
+				<div class="accordion-panel">
+					<h:form id="form-course" class="form-horizontal">
+						<div class="row">
+							<div class="col-xs-12">
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="inputNome">Nome
+									do polo</label>
+								<div class="col-sm-10">
+									<h:inputText value="#{allocationPoloLink.polo.name}" id="name"
+										required="true" requiredMessage="#{msg.POLO_NAME_REQUIRED}"
+										styleClass="form-control accordion-input accordion-input" />
+									<p:message id="poloNameMessage" for="name" display="text" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="vacancies">Vagas</label>
+								<div class="col-sm-9">
+									<p:spinner styleClass="col-lg-x" id="maxStudents"
+										value="#{allocationPoloLink.allocation.maxStudents}" min="1"
+										max="200" />
+								</div>
+							</div>
+
+							<div class="form-group pull-right">
+								<div class="col-sm-12">
+							
+									<p:commandLink value="Cadastrar"
+										action="#{allocationPoloLink.createPolo()}" id="create"
+										class="btn btn-padrao btn-verde btn-accordion">
+									</p:commandLink>
+								</div>
+							</div>
+							</div>
+						</div>
+					</h:form>
+				</div>
+
+				<script>
+					$(".accordion-insert").click(function() {
+						$(".accordion-panel").slideToggle("slow");
+					});
+				</script>
+
+				<br />
+
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<p:dataTable var="polo" value="#{editTurma.turmaPolos}" rendered="#{editTurma.turma.createPolos}"
+								emptyMessage="#{msg.POLO_EMPTY_MESSAGE}"
+								sortBy="#{polo.polo.name}" styleClass="table-admin-pattern">
+																
+								<p:column headerText="#{msg.POLO_LIST}">
+									<h:link outcome="/polo/editClassPolo"
+										title="#{msg.POLO_EDITION_TITLE}">
+										<h:outputText value="#{polo.polo.name}" />
+										<f:param name="poloId" value="#{polo.polo.id}" />
+									</h:link>
+								</p:column>
+								
+								<p:column headerText="#{msg.POLO_MAXSTUDENTS}"
+									style="width:25%;">
+									<h:outputText value="#{polo.maxStudents}" />
+								</p:column>
+									
+								<p:column headerText="Operações ">
+									<h:link styleClass="btn btn-default icon-options"
+										outcome="/polo/editClassPolo"
+										title="Editar polo">
+										<p:graphicImage library="img" name="new_img/icon_lapis.svg" />
+										<f:param name="poloId" value="#{polo.polo.id}" />
+									</h:link>
+									<h:link styleClass="btn btn-default icon-options"
+										outcome="/polo/editClassPolo"
+										title="Remover polo">
+										<p:graphicImage library="img" name="new_img/icon_lixo.svg" />
+										<f:param name="poloId" value="#{polo.polo.id}" />
+									</h:link>
+								</p:column>
+								
+							</p:dataTable>
+						</div>
+					</div>
+					<div class="form-group pull-right">
+						<div class="col-sm-12">
+							<p:commandLink
+								styleClass="btn btn-padrao btn-vermelho btn-accordion"
+								immediate="true" value="Excluir Turma"
+								action="#{editTurma.remove()}"
+								disabled="#{editTurma.canNotDeleteClass()}">
+								<p:confirm header="#{msg.CONFIRMATION}"
+									message="#{msg.DELETE_CONFIRMATION_CLASS}" icon="ui-icon-blank" />
+							</p:commandLink>
+
+							<h:commandLink
+								styleClass="btn btn-padrao btn-verde btn-accordion"
+								value="Salvar Alterações" action="#{editTurma.update()}">
+							</h:commandLink>
+
+							<h:link styleClass="btn btn-padrao btn-azul btn-accordion"
+								value="Inserir Aluno" outcome="/user/newStudent"
+								title="Inserir Estudantes">
+								<f:param name="turmaId" value="#{editTurma.turmaId}" />
+							</h:link>
+							
+							<h:link styleClass="btn btn-padrao btn-azul btn-accordion"
+								value="Inserção Em Lote" outcome="/dataMng/dbManagement"
+								title="Inserir Estudantes">
+							</h:link>
+
+							<h:link styleClass="btn btn-padrao btn-azul btn-accordion"
+								value="Gerenciar Orientadores"
+								outcome="/course/advisorsAllocated"
+								title="Gerenciar Orientadores">
+								<f:param name="classsId" value="#{editTurma.turmaId}" />
+							</h:link>
+
+							<h:link value="#{msg.ALLOCATIONS}"
+								outcome="/allocation/editStudentAllocation"
+								styleClass="btn btn-padrao btn-azul btn-accordion"
+								title="#{msg.POLO_NEW}">
+								<f:param name="turmaId" value="#{editTurma.turmaId}" />
+							</h:link>
+
+						</div>
+					</div>
+				</div>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,197 @@
+<ui:composition template="/template/one_column.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<h:outputText value="Editar "></h:outputText>
+	</ui:define>
+	
+	<ui:define name="header-button">
+		<h:link onclick="history.go(-1)"
+			styleClass="btn btn-link pull-right back-button">
+			<i class="glyphicon glyphicon-chevron-left"> </i>
+			<h:outputText value="#{msg.BACK}" />
+		</h:link>
+	</ui:define>
+	
+	<!-- Attribute 'required' removed from f:viewParam purposely. Its appearance on code caused a bug in p:ajax listener that wasn't updating. -->
+
+	<ui:define name="content">
+		<f:metadata>			
+			<f:viewParam name="userId" value="#{editUser.selectedUserId}"
+			requiredMessage="#{msg.TOKEN_REQUIRED}" />
+		</f:metadata>
+		
+		<div class="white-block">
+
+			<h1>
+				<span>Editar #{editUser.user.profile.name}</span>
+			</h1>
+
+			<br />
+
+			<h2>Visualize e edite os campos do #{editUser.user.profile.name.toLowerCase()}</h2>
+
+			<br /> <br />
+
+			<h:form id="form" class="form-horizontal" >
+			
+				<div class="row">
+				
+					<div class="col-md-6 col-xs-12">
+					
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="inputNome">Nome</label>
+							<div class="col-sm-10">
+								<p:inputText value="#{editUser.user.name}" id="name"
+									required="true" requiredMessage="#{msg.NAME_REQUIRED}"
+									styleClass="form-control accordion-input" />
+								<p:message id="nameMessage" for="name" display="text" />
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-6 col-xs-12">
+					
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="inputSobrenome">Sobrenome</label>
+							<div class="col-sm-10">
+								<p:inputText value="#{editUser.user.lastname}" id="lastname"
+									required="true" requiredMessage="#{msg.LAST_NAME_REQUIRED}"
+									styleClass="form-control accordion-input" />
+								<p:message id="lastnameMessage" for="lastname" display="text"/>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<div class="row">
+				
+					<div class="col-md-6 col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="email">E-mail</label>
+							<div class="col-sm-10">
+								<p:inputText value="#{editUser.user.email}" id="email"  type="email"
+									required="true" requiredMessage="#{msg.EMAIL_REQUIRED}"
+									styleClass="form-control accordion-input"
+									validatorMessage="Digite um email válido">
+										<f:validateRegex
+											pattern="^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*(\+{0,1}[_A-Za-z0-9-]+){0,1}@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+								</p:inputText>
+								<h:message id="emailMessage" for="email" display="text" />
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-6 col-xs-12">
+				
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="phoneNumber">Telefone</label>
+							<div class="col-sm-10">
+								<p:inputMask value="#{editUser.user.phoneNumber}" id="phoneNumber"
+									required="true" requiredMessage="#{msg.PHONE_REQUIRED}" mask="(99) 9999-9999?9"
+									styleClass="form-control accordion-input" />						
+								<p:message id="phoneNumberMessage" for="phoneNumber" display="text" />
+							</div>
+						</div>
+						
+					</div>
+				
+				</div>
+				
+				<div class="row">
+				
+					<div class="col-md-6 col-xs-12">
+					
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="inputCpf">CPF</label>
+							<div class="col-sm-10">
+								<p:inputMask value="#{editUser.user.cpf}" id="cpf"
+									mask="99999999999"
+									required="true" requiredMessage="O CPF é obrigatório"
+									styleClass="form-control accordion-input"/>
+								<p:message id="cpfMessage" for="cpf" display="text" />
+							</div>
+						</div>
+						
+					</div>
+				
+					<div class="col-md-6 col-xs-12">
+					
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="state">Estado</label>
+							<div class="col-sm-10">
+								<p:selectOneMenu id="state" value="#{editUser.selectedStateId}"
+									style="width:100%;" >
+
+								 	<p:ajax listener="#{editUser.onStateChange()}" update="city" />
+								 	
+									<f:selectItem itemLabel="#{editUser.selectedState.name}" 
+										itemValue="#{editUser.selectedState.name}" />
+									<f:selectItems value="#{editUser.stateOptions}"  />
+
+								</p:selectOneMenu>
+								
+								<p:message id="stateMessage" for="state" display="text" />
+								
+							</div>
+						</div>
+					</div>
+						
+				</div>
+				
+				<div class="row">
+				
+					<div class="col-md-6 col-xs-12">
+					
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="city">Cidade</label>
+							<div class="col-sm-10" >
+							
+								<p:selectOneMenu id="city" value="#{editUser.selectedCityId}" style="width:100%;"
+									 required="true" requiredMessage="#{msg.CITY_REQUIRED}">
+									 
+									<f:selectItem itemLabel="#{editUser.selectedCity.name}"
+										itemValue="#{editUser.selectedCity.name}" />
+									<f:selectItems value = "#{editUser.cityOptions}" />
+								
+								</p:selectOneMenu>
+									
+								<p:message id="cityMessage" for="city" display="text" />
+								
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<p:link value="Mudança de senha" outcome="/authentication/loginProblems" >
+					<ui:param name="email" value="#{loginProblems.email}" />
+				</p:link>
+				
+				<div class="form-group pull-right">
+				
+					<div class="col-sm-12" >
+					
+						<h:link id="cancelSmallDevices" value="Cancelar" onclick="history.go(-1)"
+						 styleClass="btn btn-padrao btn-cinza btn-accordion" />
+						 
+						<h:commandButton
+							value="Salvar alterações"
+							action="#{editUser.save()}" id="create"
+							styleClass="btn btn-padrao btn-verde btn-accordion" />
+						
+					</div>
+					
+				</div>
+				
+			</h:form>
+			
+		</div>
+		
+	</ui:define>
+</ui:composition>

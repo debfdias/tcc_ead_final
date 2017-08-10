@@ -1,0 +1,120 @@
+<ui:composition template="/template/two_columns.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:param name="step" value="2" />
+
+	<ui:define name="title">
+		<div class="choose-area-text">
+			<h1 class="color-institution">Trabalho acadêmico</h1>
+			<br />
+			<h2 class="color-gray">Submissão - Proposta de Trabalho de Conclusão de Curso</h2>
+		</div>
+
+	</ui:define>
+
+	<ui:define name="description">
+
+		<hr />
+
+		<p>
+			<h:outputText value="#{editPreProposal.studentAllocation.buildPreProposalText()}"/>
+		</p>
+
+		<hr />
+
+	</ui:define>
+
+	<ui:define name="context-image">
+		<h:graphicImage library="img" name="context/edit_preproposal.svg"></h:graphicImage>
+	</ui:define>
+
+	<ui:define name="content">
+		<f:metadata>
+			<f:event type="preRenderView"
+				listener="#{editPreProposal.tccNotStarted()}" />
+		</f:metadata>
+
+		<h:form id="form">
+			<div class="form-group">
+			<label class="col-xs-12 label-accordion" form="chooseArea">#{msg.EDIT_CHOOSE_AREA}</label>
+				<div class="col-xs-12" style='margin-bottom: 20px;'>
+					<h:outputText styleClass="color-institution"  value="#{editPreProposal.studentAllocation.area.name}" id="chooseArea" />
+					<p:outputLabel value=''/>
+				</div>
+			</div>
+			
+			<br />
+			
+			<div class="form-group">
+				<ui:repeat var="f" value="#{editPreProposal.fields}">
+				
+					<div class="form-group">
+						
+						<p:outputLabel styleClass="col-xs-12 label-accordion" value="#{f.field.topic}" for="fieldPrepoposal"
+							rendered="true" indicateRequired="false" />
+							
+						<p:outputLabel styleClass="col-xs-12 info-dica" value="#{f.field.description}" for="fieldPrepoposal"
+							rendered="true" indicateRequired="false" />
+							
+						<p:outputLabel styleClass="col-xs-12 info-caracteres"
+							value="O texto deve ter entre #{f.field.minCharacters} e #{f.field.maxCharacters} caracteres."
+							for="fieldPrepoposal" rendered="true" indicateRequired="false" />
+						
+						<div class="col-xs-12" style='margin-bottom: 40px;' onload="#{editPreProposal.countCharacters(f.value)}" >
+							<p:inputTextarea rows="4" id="fieldPrepoposal" styleClass="accordion-area accordion-input"
+								rendered="true" required="true" disabled="#{editPreProposal.studentAllocation.preProposal.finished}"
+								value="#{f.value}" maxlength="#{f.field.maxCharacters}"
+								requiredMessage="O tamanho do texto digitado está fora dos limites definidos para o tópico">
+								
+								<p:ajax event="keyup" listener="#{editPreProposal.countCharacters(f.value)}" update="displayPergunta" />
+							</p:inputTextarea>
+							
+							<h:outputText id="displayPergunta" styleClass="info-caracteres" value="#{editPreProposal.totalChars} caractere(s)"/>
+							
+							<p:message for="fieldPrepoposal" display="text"/>
+						</div>
+						
+					</div>
+					
+				</ui:repeat>
+				<br/>
+			</div>
+			
+			<br/>
+			
+			<div class="col-xs-12">
+				<p:commandButton value="#{msg.SAVE}"
+					styleClass="button-template border-color-1 btn-accordion"
+					action="#{editPreProposal.save}" ajax="false"
+					onclick="buttonStartLoading('btn-save', 'Salvando');"
+					disabled="#{editPreProposal.studentAllocation.preProposal.finished}" />
+					
+				<p:commandButton value="#{msg.SEND}"
+					styleClass="button-template border-color-1 btn-accordion"
+					action="#{editPreProposal.finish}" update=":messages :form"
+					onclick="buttonStartLoading('btn-azul', 'Finalizando');"
+					disabled="#{editPreProposal.studentAllocation.preProposal.finished}">
+					
+					<p:confirm header="Confirmação"
+						message="#{msg.PREPROPOSAL_CONFIRMATION_QUESTION}" />
+						
+				</p:commandButton>
+			</div>
+
+			<p:confirmDialog global="true" showEffect="fade" severity="alert" styleClass="no-icon-dialog">
+			
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>

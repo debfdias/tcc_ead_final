@@ -1,0 +1,103 @@
+<ui:composition template="/template/one_column.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="content">
+		
+		<div class="white-block">
+
+			<h1>
+				<span>Suporte</span>
+			</h1>
+		
+			<br />
+
+			<br /> <br />
+
+			<h:form id="form" class="form-horizontal" >
+			
+				<div class="row">
+				
+					<div class="col-md-6 col-xs-12">
+					
+						<div class="form-group">
+							<h2>Instituição </h2>
+							<br />
+							<h5>olar</h5>
+							<br />
+						</div>
+						
+						<div class="form-group">
+							<h2>Endereço </h2>
+							<br />
+							<h5>Centro de Convenções (Teatro) da Universidade Federal de Pernambuco, Sala 04
+							Av. dos Reitores, s/n | Cidade Universitária | Recife – PE
+							CEP 50.741-000</h5>
+							<br />
+						</div>
+
+						<div class="form-group">
+							<h2>Site </h2>
+							<br />
+							<a target="_blank" href="http://www.sabertecnologias.com.br">www.sabertecnologias.com.br</a>
+							<br />
+						</div>
+
+						<div class="form-group">
+							<h2>Fone</h2>
+							<br />
+							<h5>+55 81 2126-8427</h5>
+							<br />
+						</div>		
+						
+						<div class="form-group">
+							<h2>Horário de funcionamento</h2>
+							<br />
+							<h5>Segunda a sexta-feira, das 8h às 12h e das 14h às 17h.</h5>
+							<br />
+						</div>
+						
+						<div class="form-group">
+							<h2>Redes sociais</h2>
+							<br />
+							<a target="_blank" href="https://www.facebook.com/sabertecnologias">https://www.facebook.com/sabertecnologias</a>
+							<br/>
+							<a target="_blank" href="https://www.youtube.com/channel/UCdtOEya1MkLI6sdjYclGiXQ">https://www.youtube.com/channel/UCdtOEya1MkLI6sdjYclGiXQ</a>
+							<br />
+						</div>							
+					</div>
+					
+				</div>
+				
+			</h:form>
+			
+		</div>
+		
+		<br />
+		<br />
+		
+		<div class="white-block">
+				<h1>
+				<span>Mensagem</span>
+				</h1>	
+				<br />
+				<br />
+				
+				<h:commandButton
+						value="Central de atendimentos"
+						action="#" id="create"
+						styleClass="btn btn-padrao btn-verde" />
+				<br />
+				<br />
+				<div class="form-group">
+				<h5>Ao clicar, você será redirecionado
+					para a central de atendimentos</h5>
+				<br />
+				</div>
+		</div>
+		
+	</ui:define>
+</ui:composition>

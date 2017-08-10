@@ -1,0 +1,152 @@
+<ui:composition template="/template/one_column.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<h:outputText value="Novo Usuário"></h:outputText>
+	</ui:define>
+
+	<ui:define name="header-button">
+		<h:link onclick="history.go(-1)"
+			styleClass="btn btn-link pull-right back-button">
+			<i class="glyphicon glyphicon-chevron-left"> </i>
+			<h:outputText value="#{msg.BACK}" />
+		</h:link>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div class="white-block">
+
+			<h1>
+				<span>Usuário</span>
+			</h1>
+
+			<br />
+
+			<h2>Cadastrar usuário</h2>
+
+			<br /> <br />
+
+			<h:form id="form" class="form-horizontal">
+			
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="inputNome">Nome</label>
+					<div class="col-sm-10">
+						<h:inputText value="#{newUser.user.name}" id="name"
+							required="true" requiredMessage="#{msg.NAME_REQUIRED}"
+							styleClass="form-control accordion-input" />
+						<p:message id="nameMessage" for="name" display="text" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="inputSobrenome">Sobrenome</label>
+					<div class="col-sm-10">
+						<h:inputText value="#{newUser.user.lastname}" id="lastname"
+							required="true" requiredMessage="#{msg.LAST_NAME_REQUIRED}"
+							styleClass="form-control accordion-input" />
+						<p:message id="lastnameMessage" for="lastname" display="text" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="inputCpf">CPF</label>
+					<div class="col-sm-10">
+						<p:inputMask value="#{newUser.user.cpf}" id="cpf"
+							mask="99999999999"
+							required="true" requiredMessage="O CPF é obrigatório"
+							styleClass="form-control accordion-input"/>
+						<p:message id="cpfMessage" for="cpf" display="text" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="email">E-mail</label>
+					<div class="col-sm-10">
+						<h:inputText value="#{newUser.user.email}" id="email"
+							required="true" requiredMessage="#{msg.EMAIL_REQUIRED}"
+							styleClass="form-control accordion-input" />
+						<p:message id="emailMessage" for="email" display="text" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="phoneNumber">Telefone</label>
+					
+					<div class="col-sm-10">
+					
+						<p:inputMask value="#{newUser.user.phoneNumber}" id="phoneNumber"
+							required="true" requiredMessage="#{msg.PHONE_REQUIRED}" mask="(99) 9999-9999?9"
+							styleClass="form-control accordion-input" />
+													
+						<p:message id="phoneNumberMessage" for="phoneNumber" display="text" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="State">Estado</label>
+					<div class="col-sm-10">
+					
+						<p:selectOneMenu id="state" value="#{newUser.selectedStateId}"
+						 	styleClass="accordion-input">
+
+						 	<p:ajax listener="#{newUser.onStateChange()}" update="city" />
+						 	
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{newUser.stateOptions}"  />
+
+						</p:selectOneMenu>
+						
+						<p:message id="stateMessage" for="state" display="text" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="city">Cidade</label>
+					<div class="col-sm-10">
+					
+						<p:selectOneMenu id="city" value="#{newUser.selectedCityId}"
+							required="true" requiredMessage="#{msg.CITY_REQUIRED}"
+							styleClass="accordion-input">
+
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{newUser.cityOptions}" />
+						</p:selectOneMenu>
+							
+						<p:message id="cityMessage" for="city" display="text" />
+						
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="profile">Perfil</label>
+					<div class="col-sm-10">
+						<p:selectOneMenu id="profile" value="#{newUser.selectedProfileId}"
+							required="true" requiredMessage="#{msg.USER_PROFILE_REQUIRED}">
+
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{newUser.profileOptions}" />
+						</p:selectOneMenu>
+						<p:message id="profileMessage" for="profile" display="text" />
+					</div>
+				</div>
+
+				<div class="form-group pull-right">
+					<div class="col-sm-12">
+						<h:link id="cancelSmallDevices" value="Cancelar"
+							onclick="history.back(); return false;"
+							styleClass="btn btn-default hidden-xs btn-xs-full-width" />
+						<h:commandButton value="Cadastrar" action="#{newUser.save}"
+							id="create" class="btn btn-primary btn-xs-full-width" />
+					</div>
+				</div>
+				
+			</h:form>
+			
+		</div>
+	</ui:define>
+</ui:composition>

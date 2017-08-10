@@ -1,0 +1,261 @@
+<ui:composition template="/template/one_column.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:k="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="title">
+		<h:outputText value="CADASTRO E ALOCAÇÃO DE ESTUDANTE"></h:outputText>
+	</ui:define>
+
+	<ui:define name="header-button">
+		<h:link onclick="history.go(-1)"
+			styleClass="btn btn-link pull-right back-button">
+			<i class="glyphicon glyphicon-chevron-left"> </i>
+			<h:outputText value="#{msg.BACK}" />
+		</h:link>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<f:metadata>
+			<f:viewParam name="turmaId" value="#{editTurma.turmaId}" />
+		</f:metadata>
+
+		<div class="white-block">
+
+			<h1>
+				<span>Cadastro de alunos com upload de arquivos</span>
+			</h1>
+
+			<br />
+
+			<h2>Selecione planilhas contendo cadastros de alunos.</h2>
+
+			<br /> <br />
+
+			<h:form id="form" class="form-horizontal">
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="inputInstitution">Instituição</label>
+					<div class="col-sm-10">
+						<h:inputText value="#{newStudent.classs.course.institution.name}"
+							id="institutionClassCourseName" required="true"
+							requiredMessage="#{msg.CLASS_NAME_REQUIRED}"
+							styleClass="form-control accordion-input" disabled="true" />
+						<p:message id="institutionClassCourseNameMessage"
+							for="institutionClassCourseName" display="text" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="inputCourse">Curso</label>
+					<div class="col-sm-10">
+						<h:inputText value="#{newStudent.classs.course.name}"
+							id="classCourseName" required="true"
+							requiredMessage="#{msg.CLASS_NAME_REQUIRED}"
+							styleClass="form-control accordion-input" disabled="true" />
+						<p:message id="classCourseNameMessage" for="classCourseName"
+							display="text" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="inputClasss">Turma</label>
+					<div class="col-sm-10">
+						<h:inputText value="#{newStudent.classs.name}" id="className"
+							required="true" requiredMessage="#{msg.CLASS_NAME_REQUIRED}"
+							styleClass="form-control accordion-input" disabled="true" />
+						<p:message id="classNameMessage" for="className" display="text" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<p:outputLabel indicateRequired="false" value="Polo" class="control-label col-sm-2" for="polo" rendered="#{newStudent.showManyPolos()}"></p:outputLabel>
+					<div class="col-sm-10">
+						<p:selectOneMenu id="polo" value="#{newStudent.selectedClassPoloId}" rendered="#{newStudent.showManyPolos()}"
+							required="true" requiredMessage="Escolher polo">
+							<p:ajax listener="#{newStudent.selectedClassPoloId}"/>
+							<f:selectItem itemLabel="Selecione" itemValue=""/>
+							<f:selectItems value="#{newStudent.turmaPolosOptions}" />
+						</p:selectOneMenu>
+						<p:message id="poloMessage" for="polo" display="text" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="advisor">Orientador</label>
+					<div class="col-sm-10">
+						<p:selectOneMenu value="#{newStudent.selectedAdvisorId}" id="advisor">
+						<p:ajax listener="#{newStudent.insertAdvisor()}"/>
+						<f:selectItem itemLabel="Selecione - opcional" itemValue="" />
+							<f:selectItems value="#{newStudent.advisorOptions}" />
+						<p:ajax update="line area"/>
+						</p:selectOneMenu>	
+					</div>
+				</div>
+				<div class="form-group">
+					<p:outputLabel value="Linha" styleClass="control-label col-sm-2" for="line" indicateRequired="false"></p:outputLabel>
+					<div class="col-sm-10">
+						<p:selectOneMenu value="#{newStudent.selectedLineId}" id="line" disabled="#{newStudent.selectLineToAdvisor}">
+						<p:ajax listener="#{newStudent.chooseLineToAreas()}" update="area"/>
+						<f:selectItem itemLabel="Selecione - opcional" itemValue="" />
+							<f:selectItems value="#{newStudent.lineOptions}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<div class="form-group">
+					<p:outputLabel value="Área" styleClass="control-label col-sm-2" for="area" indicateRequired="false"></p:outputLabel>
+					<div class="col-sm-10">
+						<p:selectOneMenu value="#{newStudent.selectedAreaId}" id="area" disabled="#{newStudent.selectAreaToLine}">
+						<p:ajax listener="#{newStudent.insertArea()}"/>
+						<f:selectItem itemLabel="Selecione - opcional" itemValue="" />
+							<f:selectItems value="#{newStudent.areaOptions()}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="inputName">Nome</label>
+					<div class="col-sm-10">
+						<h:inputText value="#{newStudent.student.name}" id="Name"
+							required="true" requiredMessage="#{msg.NAME_REQUIRED}"
+							styleClass="form-control accordion-input" />
+						<p:message id="NameMessage" for="Name" display="text" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="inputLastName">Sobrenome</label>
+					<div class="col-sm-10">
+						<h:inputText value="#{newStudent.student.lastname}" id="LastName"
+							required="true" requiredMessage="#{msg.LAST_NAME_REQUIRED}"
+							styleClass="form-control accordion-input" />
+						<p:message id="LastNameMessage" for="LastName" display="text" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="inputCpf">CPF</label>
+					<div class="col-sm-10">
+						<p:inputMask value="#{newStudent.student.cpf}" id="cpf"
+							mask="99999999999"
+							required="true" requiredMessage="O CPF é obrigatório"
+							styleClass="form-control accordion-input"/>
+						<p:message id="cpfMessage" for="cpf" display="text" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="inputEmail">E-mail</label>
+					<div class="col-sm-10">
+						<p:inputText value="#{newStudent.student.email}" id="email"
+							required="true" requiredMessage="#{msg.EMAIL_REQUIRED}"
+							styleClass="form-control accordion-input"
+							validatorMessage="Digite um email válido">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*(\+{0,1}[_A-Za-z0-9-]+){0,1}@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+						<p:message id="emailMessage" for="email" display="text" />
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="State">Estado</label>
+					<div class="col-sm-10">
+						<p:selectOneMenu id="state" value="#{newStudent.selectedStateId}"
+						 	styleClass="accordion-input">
+						 	<p:ajax listener="#{newStudent.onStateChange()}" update="city" />
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{newStudent.stateOptions}"  />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="city">Cidade</label>
+					<div class="col-sm-10">
+						<p:selectOneMenu id="city" value="#{newStudent.selectedCityId}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{newStudent.cityOptions}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+
+
+				<div class="form-group" >
+					<p:outputLabel class="control-label col-sm-2" for="profile" value="Perfil" rendered="false"></p:outputLabel>
+					<div class="col-sm-10">
+						<p:selectOneMenu id="profile" rendered="false"
+							value="#{newStudent.selectedProfileId}" required="true"
+							requiredMessage="#{msg.PROFILE_REQUIRED}">
+
+							<f:selectItems value="#{newStudent.profileOptions}" />
+						</p:selectOneMenu>
+						<p:message id="profileMessage" for="profile" display="text" />
+					</div>
+				</div>
+				<h:outputLabel value="Upload de cadastro de usuários"
+					for="fileUpload" />
+				<p:fileUpload id="fileUpload" styleClass="file-upload" update=":formDataTable:students"
+					mode="advanced"
+					allowTypes="/(\.|\/)(xlsx|xls)$/"
+					invalidFileMessage="#{msg.SELECT_FILES_ERROR_TYPE}"
+					fileLimitMessage="#{msg.SELECT_FILES_ERROR_LIMIT}"
+					fileLimit="1"
+					multiple="true"
+					value="#{newStudent.userSheet}" fileUploadListener="#{newStudent.insertStudentSheet}"
+					label="#{msg.SELECT_FILE}"
+					uploadLabel="#{msg.UPLOAD}"
+					cancelLabel="#{msg.CANCEL}">
+				</p:fileUpload>
+
+				
+			</h:form>
+
+			<br />
+
+			<div class="row">
+
+				<div class="col-xs-12">
+					<div class="form-group">
+
+						<h:form id="formDataTable" Class="form-horizontal"
+							style="with:100%">
+
+							<p:dataTable var="stu" value="#{newStudent.userSheet}" id="students"
+								styleClass="table-admin-pattern"
+								rows="20" paginator="true" paginatorPosition="both"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" sortBy="#{stu.id}"
+								emptyMessage="Nenhum aluno alocado para esta turma">
+
+
+								<p:column headerText="Nome" sortBy="#{stu.name}" filterBy="#{stu.name}">
+									<h:outputText value="#{stu.name} #{stu.lastname}" />
+								</p:column>
+
+								<p:column headerText="E-mail" sortBy="#{stu.email}" filterBy="#{stu.email}">
+									<h:outputText value="#{stu.email}" />
+								</p:column>
+
+								<p:column headerText="CPF" filterBy="#{stu.cpf}">
+									<h:outputText value="#{stu.cpf}" />
+								</p:column>
+								
+								<p:column headerText="Telefone" sortBy="#{stu.phoneNumber}" filterBy="#{stu.phoneNumber}">
+									<h:outputText value="#{stu.phoneNumber}" />
+								</p:column>
+							</p:dataTable>
+						</h:form>
+
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</ui:define>
+</ui:composition>

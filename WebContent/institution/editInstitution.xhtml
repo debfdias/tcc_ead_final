@@ -1,0 +1,208 @@
+<ui:composition template="/template/one_column.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<h:outputText value="#{msg.INSTITUTION_EDITION}"></h:outputText>
+	</ui:define>
+	
+	<f:metadata>
+		<f:viewParam name="institution"
+			value="#{editInstitution.institutionId}" />
+			
+		<f:viewAction action="#{editInstitution.updateFields}" />
+	</f:metadata>
+
+	<ui:define name="header-button">
+	
+		<h:link onclick="history.go(-1)"
+			styleClass="btn btn-link pull-right back-button">
+			<i class="glyphicon glyphicon-chevron-left"> </i>
+			<h:outputText value="#{msg.BACK}" />
+			
+		</h:link>
+		
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div class="white-block">
+
+			<h1>
+				<span>Editar instituição</span>
+			</h1>
+
+			<br />
+
+			<h2>Edite as informações referentes a instituição <h:outputText value="#{editInstitution.institution.acronym}"/> - <h:outputText value="#{editInstitution.institution.name}"/>.</h2>
+
+			<br />
+
+			<h:form id="form" class="form-horizontal">
+			
+				<div class="row">
+				
+					<div class="col-xs-12">
+					
+						<div class="row">
+						
+							<div class="col-md-6 col-xs-12">
+							
+								<div class="form-group">
+									<label class="col-sm-2 label-accordion" for="inputNome">Instituição</label>
+									
+									<div class="col-sm-10">
+									
+										<p:inputText value="#{editInstitution.institution.name}"
+											id="name" required="true"
+											requiredMessage="#{msg.INSTITUTION_NAME_REQUIRED}"
+											styleClass="form-control accordion-input accordion-input" />
+										<p:message id="nameMessage" for="name" display="text" />
+											
+									</div>
+								</div>
+							</div>
+									
+							<div class="col-md-6 col-xs-12">
+								<div class="form-group">
+									<label class="col-sm-2 label-accordion" for="inputAcronym">Acrônimo</label>
+									
+									<div class="col-sm-10">
+									
+										<p:inputText value="#{editInstitution.institution.acronym}"
+											id="acronym" required="true"
+											requiredMessage="#{msg.ACRONYM_REQUIRED}"
+											styleClass="form-control accordion-input accordion-input" />
+										<p:message id="acronymMessage" for="acronym" display="text" />
+										
+									</div>
+									
+								</div>
+							</div>
+							
+						</div>
+						
+						<div class="row">
+						
+							<div class="col-md-6 col-xs-12">
+								<div class="form-group">
+								
+									<label class="col-sm-2 label-accordion" for="state">Estado</label>
+									
+									<div class="col-sm-10">
+										<p:selectOneMenu id="state" value="#{editInstitution.selectedStateId}"
+										 	styleClass="accordion-input">
+		
+										 	<p:ajax listener="#{editInstitution.onStateChange()}" update="city" />
+										 	
+											<f:selectItem itemLabel="#{editInstitution.selectedState.name}"
+												itemValue="#{editInstitution.selectedState.name}" />
+											<f:selectItems value="#{editInstitution.stateOptions}"  />
+		
+										</p:selectOneMenu>
+										
+										<p:message id="stateMessage" for="state" display="text" />
+										
+									</div>
+								</div>
+								
+							</div>
+									
+							<div class="col-md-6 col-xs-12">
+								<div class="form-group">
+								
+									<label class="col-sm-2 label-accordion" for="city">Cidade</label>
+									
+									<div class="col-sm-10">
+									
+										<p:selectOneMenu id="city" value="#{editInstitution.selectedCityId}"
+											required="true" requiredMessage="#{msg.CITY_REQUIRED}"
+											styleClass="accordion-input">
+		
+											<f:selectItem itemLabel="" itemValue="" />
+											<f:selectItems value="#{editInstitution.cityOptions}" />
+											
+										</p:selectOneMenu>
+											
+										<p:message id="cityMessage" for="city" display="text" />
+										
+									</div>
+									
+								</div>
+							</div>
+							
+						</div>
+						
+						<div class="row">
+						
+							<div class="col-md-6 col-xs-12">
+							
+								<div class="form-group">
+								
+									<label class="col-sm-2 label-accordion" for="inputContato">Contato</label>
+									
+									<div class="col-sm-10">
+										<p:inputMask value="#{editInstitution.institution.contato}"
+											mask="(99) 9999-9999?9" id="contato" required="true"
+											requiredMessage="#{msg.INSTITUTION_CONTACT_REQUIRED}"
+											styleClass="form-control accordion-input accordion-input" />
+										<p:message id="contatoMessage" for="contato" display="text" />
+										
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						
+						<br/>
+
+						<p:dataTable var="course" value="#{editInstitution.institution.courses}" paginator="true" 
+							sortBy="#{course.id}" emptyMessage="#{msg.COURSES_EMPTY_MESSAGE}" styleClass="table-admin-pattern">
+						
+							<p:column headerText="Curso" visible="true">
+								
+								<h:link outcome="/course/manageCourse.xhtml">
+									<h:outputText value="#{course.name}"/>	
+									<f:param name="courseId" value="#{course.id}" />
+								</h:link>
+								
+							</p:column>
+							
+							<p:column headerText="Editar" styleClass="text-center table-options">
+							
+								<h:link styleClass="btn btn-default icon-options"
+									outcome="/course/editCourse.xhtml"
+									title="#{msg.COURSES_EDITION_TITLE}">
+									
+									<p:graphicImage library="img" name="new_img/icon_lapis.svg" />
+									<f:param name="courseId" value="#{course.id}" />
+									
+								</h:link>
+								
+							</p:column>
+						
+						</p:dataTable>
+					
+					</div>
+				</div>
+
+				<p:commandLink id="updateInstitution"
+					styleClass="btn btn-padrao btn-verde btn-accordion"
+					value="Salvar Alterações" action="#{editInstitution.update()}">
+				</p:commandLink>
+				
+				<p:commandLink id="removeInstitution"
+					styleClass="btn btn-padrao btn-vermelho btn-accordion"
+					value="Excluir Instituição" action="#{editInstitution.remove()}"
+					disabled="#{editInstitution.canNotDeleteInstitution()}">
+				</p:commandLink>
+				
+			</h:form>
+		</div>
+		
+	</ui:define>
+	
+</ui:composition>

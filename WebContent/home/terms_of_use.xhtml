@@ -1,0 +1,61 @@
+<ui:composition template="/template/general.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:define name="title">
+		<h:outputText value="#{msg.TERMS_OF_USE}"></h:outputText>
+	</ui:define>
+
+	<ui:define name="full-content">
+
+		<div id="content">
+			<div class="container termos-uso-centro">
+
+				<f:metadata>
+					<f:viewParam name="allocation" value="#{termsOfUse.allocationId}"
+						required="true" requiredMessage="Token obrigatório." />
+					<f:viewAction action="#{termsOfUse.updateFields}" />
+				</f:metadata>
+
+				<div class="terms-of-use">
+
+					<p class="titulo-h3">#{msg.TERMS_OF_USE_NAME}</p>
+					<p>
+						<h:outputText value="#{termsOfUse.classs.name}"></h:outputText>
+					</p>
+
+				</div>
+
+				<hr />
+
+				<h:form>
+
+					<h:outputText value="#{termsOfUse.classs.termsOfUse}"
+						escape="false" styleClass="text-justify light-text"></h:outputText>
+
+					<ui:fragment rendered="#{not termsOfUse.termsOfUseAccepted}">
+						<div class="col-xs-12">
+	
+							<br /> <br />
+	
+							<h:commandButton
+								styleClass="btn btn-padrao btn-vermelho btn-accordion"
+								value="#{msg.REJECT}" action="#{termsOfUse.rejectTerm}"/>
+	
+							<h:commandButton
+								styleClass="btn btn-padrao btn-verde btn-accordion"
+								value="#{msg.ACCEPT}" action="#{termsOfUse.acceptTerm}"/>
+	
+						</div>
+					</ui:fragment>
+
+				</h:form>
+
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>
